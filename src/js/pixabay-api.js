@@ -1,27 +1,22 @@
-export const searchImage = search => {
-  const searchParams = new URLSearchParams({
-    key: '47683797-671cdc264b1a4ae65b7ce6d71',
-    q: search,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-  });
+import axios from 'axios';
 
-  const url = `https://pixabay.com/api/?${searchParams}`;
+const API_KEY = '47683797-671cdc264b1a4ae65b7ce6d71';
+const URL = 'https://pixabay.com/api/';
 
-  const options = {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Host: 'http://localhost:5173',
-      Origin: 'https://pixabay.com/api',
-    },
-  };
-
-  return fetch(url, options).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    return response.json();
-  });
-};
+export function searchImage(search) {
+  return axios
+    .get(URL, {
+      params: {
+        key: API_KEY,
+        q: search,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+      },
+    })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error fetch:', error);
+      throw error;
+    });
+}
